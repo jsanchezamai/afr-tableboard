@@ -34,7 +34,6 @@
     }
   ],
   "schemes": [
-    "https",
     "http"
   ],
   "paths": {
@@ -61,7 +60,227 @@
         "security": [
           {
             "afr_tableboard_auth": [
-              "read:engine_status"
+              "read:engines"
+            ]
+          }
+        ]
+      }
+    },
+    "/engine": {
+      "post": {
+        "tags": [
+          "Simulation Engine"
+        ],
+        "summary": "Add an engine",
+        "description": "",
+        "operationId": "addEngine",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Engine object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Engine"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Engine not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "afr_tableboard_auth": [
+              "write:engines",
+              "read:engines"
+            ]
+          }
+        ]
+      }
+    },
+    "/engine/all": {
+      "get": {
+        "tags": [
+          "Simulation Engine"
+        ],
+        "summary": "Find engine All",
+        "description": "Returns a single engine",
+        "operationId": "getEngineAll",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Engine"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Ening not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/engine/{engineId}": {
+      "get": {
+        "tags": [
+          "Simulation Engine"
+        ],
+        "summary": "Find engine by ID",
+        "description": "Returns a single engine",
+        "operationId": "getEngineById",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "engineId",
+            "in": "path",
+            "description": "ID of engine to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Engine"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Ening not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Simulation Engine"
+        ],
+        "summary": "Updates a engine in the store with form data",
+        "description": "",
+        "operationId": "updateEngineWithForm",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "engineId",
+            "in": "path",
+            "description": "ID of engine that needs to be updated",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "description": "Updated name of the engine",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "formData",
+            "description": "Updated status of the engine",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "afr_tableboard_auth": [
+              "write:engines",
+              "read:engines"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Simulation Engine"
+        ],
+        "summary": "Deletes a engine",
+        "description": "",
+        "operationId": "deleteEngine",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "engineId",
+            "in": "path",
+            "description": "Engine id to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid engine value"
+          }
+        },
+        "security": [
+          {
+            "afr_tableboard_auth": [
+              "write:engines",
+              "read:engines"
             ]
           }
         ]
@@ -74,8 +293,8 @@
       "authorizationUrl": "http://github.com/jsanchezamai/afr-tableboard/oauth/dialog",
       "flow": "implicit",
       "scopes": {
-        "write:engine_status": "modify engine status",
-        "read:engine_status": "read engine status"
+        "write:engines": "modify engine status",
+        "read:engines": "read engine status"
       }
     },
     "api_key": {
@@ -84,8 +303,36 @@
       "in": "header"
     }
   },
+  "definitions": {
+    "Engine": {
+      "title": "Simulator engine",
+      "description": "A engine that can connect to multiplexor-afr and run data",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lastName": {
+          "type": "string",
+          "format": "int64"
+        },
+        "email": {
+          "type": "string",
+          "format": "int32"
+        },
+        "password": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "xml": {
+        "name": "Engine"
+      }
+    }
+  },
   "externalDocs": {
     "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
+    "url": "https://escrivivir.wordpress.com/a-favor-de-la-revolucion/afr-campus"
   }
 }
