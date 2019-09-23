@@ -1,0 +1,91 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Mediante Unity y Visual Studio manejaremos un tablero C# y una capa TS/Angular de visualización multimedia apoyándose en WebVR, WebGL. A su vez, se cocinarán clientes para estaciones de juego y dispositivo de realidad aumentada de forma nativa",
+    "version": "0.0.1",
+    "title": "AFR Tableboard Simulation aula",
+    "termsOfService": "https://github.com/jsanchezamai/afr-tableboard",
+    "contact": {
+      "email": "jsanchezamai@afr.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/v2",
+  "tags": [
+    {
+      "name": "Simulation Engine",
+      "description": "Everything about the simulation tableboard and its connection to multiplexor",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://escrivivir.wordpress.com/a-favor-de-la-revolucion/afr-campus/afr-campus-aula-de-revoluciones/"
+      }
+    },
+    {
+      "name": "Multiplexor routes to persistence",
+      "description": "Access to multiplexor through sparql query gateway."
+    },
+    {
+      "name": "Multiplexor routes to truth IoT filed",
+      "description": "Access to multiplexor through devices and user entities"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/engine/status": {
+      "get": {
+        "tags": [
+          "Simulation Engine"
+        ],
+        "summary": "Check if the kernel of the engine is working",
+        "description": "",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "afr_tableboard_auth": [
+              "read:engine_status"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "afr_tableboard_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://github.com/jsanchezamai/afr-tableboard/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:engine_status": "modify engine status",
+        "read:engine_status": "read engine status"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
