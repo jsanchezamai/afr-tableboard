@@ -23,7 +23,7 @@
     "helmet": "^3.13.0",
     "http-status": "^1.2.0",
     "jwt-then": "^1.0.1",
-    "mongoose": "^5.2.15"
+    "mongoose": "^5.7.5"
   },
   "devDependencies": {
     "@types/dotenv": "^4.0.3",
